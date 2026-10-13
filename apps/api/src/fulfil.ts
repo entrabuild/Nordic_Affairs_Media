@@ -8,7 +8,10 @@ import { receiptPdf, ticketsPdf } from './documents.js'
 import { release, releaseOrderHolds, reserve } from './stock.js'
 import { getDb } from './db.js'
 import { stripe } from './stripe.js'
+<<<<<<< HEAD
 import { sendSms, smsReady } from './sms.js'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 import type { Hold } from './stock.js'
 
 export const orderLink = (order: Order) =>
@@ -76,6 +79,7 @@ export async function fulfilOrder(
     await sendTicketsEmail(order).catch((e) =>
       console.error(`[booking] ${orderId}: tickets issued but email failed`, e),
     )
+<<<<<<< HEAD
     // "Tickets by SMS" service: a link to the QR tickets. A failure here never undoes the sale.
     if (order.services?.smsTickets && order.phone && smsReady()) {
       const sent = await sendSms(
@@ -84,6 +88,8 @@ export async function fulfilOrder(
       ).catch(() => false)
       if (sent) await orders().updateOne({ _id: orderId }, { $set: { smsTicketsSentAt: new Date() } })
     }
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   }
   return order
 }

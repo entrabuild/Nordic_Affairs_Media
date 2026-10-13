@@ -143,6 +143,7 @@ export const ml: Dictionary = {
   hubAvailError: 'ബുക്കിംഗ് സേവനത്തിൽ എത്താനായില്ല. അത് ഉണരുകയായിരിക്കാം — വീണ്ടും ശ്രമിക്കുക.',
   hubRetry: 'വീണ്ടും ശ്രമിക്കുക',
   hubNotOnSale: 'വിൽപ്പനയിലില്ല',
+<<<<<<< HEAD
   hubGetTickets: 'ടിക്കറ്റുകൾ വാങ്ങുക',
   hubFrom: 'തുടക്കം',
   hubFree: 'സൗജന്യം',
@@ -200,6 +201,8 @@ export const ml: Dictionary = {
   hubBookedBody: 'നന്ദി! നിങ്ങളുടെ പേയ്‌മെന്റ് വിജയിച്ചു. ടിക്കറ്റുകൾ താഴെയുണ്ട്, ഇമെയിലും ചെയ്തിട്ടുണ്ട്.',
   hubNoTickets: 'ടിക്കറ്റുകൾ ഇപ്പോൾ വിൽപ്പനയിലില്ല.',
   hubServiceFree: 'ഉൾപ്പെടുന്നു',
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   organizer: 'സംഘാടകൻ',
   hubDiscover: 'ഇവന്റുകൾ കണ്ടെത്തുക',
   hubMyTickets: 'എന്റെ ടിക്കറ്റുകൾ',

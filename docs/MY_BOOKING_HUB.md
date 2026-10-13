@@ -9,14 +9,19 @@ the Admin/Staff portals are unchanged. **There is no customer signup or login.**
 | Address | What it is |
 |---|---|
 | `/[locale]/account` | **Discover events**: search, date chips, city, categories, list/map, "Coming up" |
+<<<<<<< HEAD
 | `/[locale]/account/events/[slug]` | Event page: poster, **From price + Get tickets** button, location, date, map, description |
 | `/[locale]/account/events/[slug]/tickets` | **Get tickets**: the 4-step checkout (Tickets, Buyer's information, Services, Payment) |
 | `/[locale]/account?view=cart` | **Cart** tab: tickets (and promo code) saved in this browser, with a Checkout button |
+=======
+| `/[locale]/account/events/[slug]` | Event details, venue map, tickets, promo code, checkout |
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 | `/[locale]/account?view=tickets` | **My tickets**: the original My Bookings (email one-time code, order history, ticket + receipt PDFs, re-send, cancellation request), unchanged |
 | `/[locale]/booking/confirmation` | Stripe success page (unchanged) |
 
 ## How buying works now
 
+<<<<<<< HEAD
 1. **Event page -> Get tickets** opens the checkout.
 2. **Step 1 Tickets:** `+` / `-` per ticket type. The Order Summary on the right updates automatically (tickets, ticket fee,
    discount, **Order Amount**), always calculated by the booking API (`POST /quote`), never in the browser.
@@ -49,6 +54,17 @@ Each can be switched on/off and priced (event currency, defaults 15 / 13 / 15). 
 **SMS needs Twilio.** Without these three settings on the Render API the two SMS services are not offered to buyers (nobody pays for
 something we cannot send): `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` (your Twilio number or sender name).
 Only refund protection is shown until then.
+=======
+1. The buyer picks tickets (and optionally applies a promo code; the discount is calculated by the server).
+2. They tick the terms box and press **Continue to payment**. No name or email form on our side.
+3. **Stripe's secure payment page collects email, name and phone number.**
+4. When Stripe confirms the payment (signed webhook, never just the redirect), the website copies those details
+   onto the order, issues the QR tickets and emails them. The same email can later open **My tickets** with a one-time code.
+5. Free orders (free tickets or a 100% code) never reach Stripe, so only those ask for name and email on our page.
+6. If payment is cancelled the buyer returns to the same event page inside My Booking.
+
+The phone number is stored on the order and returned to authorised staff in the event order list (`phone`).
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 ## Why ticket selection failed (diagnosis from the code)
 
@@ -85,6 +101,7 @@ a clear error with **Try again**, and per-tier "Not on sale".
 
 Deploy: push to GitHub (Vercel rebuilds the website), redeploy the Render API, set the variables above.
 Roll back: redeploy the previous Git commit on both. No existing data was modified; no migration involved.
+<<<<<<< HEAD
 
 
 ## Event map location (admin)
@@ -101,3 +118,5 @@ The event's own location wins; if it is empty the venue's coordinates (Venues â†
 are used; with neither, the event stays in the list but is not pinned. Map tiles and the address
 search use OpenStreetMap (no key). Note: the address search needs the browser to reach
 nominatim.openstreetmap.org; if it is blocked, click the map instead.
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975

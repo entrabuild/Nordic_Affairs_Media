@@ -141,6 +141,7 @@ export const en = {
   hubAvailError: 'We could not reach the booking service. It may be waking up — please try again.',
   hubRetry: 'Try again',
   hubNotOnSale: 'Not on sale',
+<<<<<<< HEAD
   hubGetTickets: 'Get tickets',
   hubFrom: 'From',
   hubFree: 'Free',
@@ -198,6 +199,8 @@ export const en = {
   hubBookedBody: 'Thank you! Your payment went through. Your tickets are below and have been emailed to you.',
   hubNoTickets: 'Tickets are not on sale right now.',
   hubServiceFree: 'Included',
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   organizer: 'Organiser',
   hubDiscover: 'Discover events',
   hubMyTickets: 'My tickets',

@@ -143,6 +143,7 @@ export const sv: Dictionary = {
   hubAvailError: 'Vi nådde inte bokningstjänsten. Den kanske startar — försök igen.',
   hubRetry: 'Försök igen',
   hubNotOnSale: 'Inte till salu',
+<<<<<<< HEAD
   hubGetTickets: 'Köp biljetter',
   hubFrom: 'Från',
   hubFree: 'Gratis',
@@ -200,6 +201,8 @@ export const sv: Dictionary = {
   hubBookedBody: 'Tack! Din betalning gick igenom. Dina biljetter finns nedan och har skickats till dig.',
   hubNoTickets: 'Biljetter är inte till salu just nu.',
   hubServiceFree: 'Ingår',
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   organizer: 'Arrangör',
   hubDiscover: 'Upptäck evenemang',
   hubMyTickets: 'Mina biljetter',

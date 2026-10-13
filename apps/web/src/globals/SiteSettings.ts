@@ -152,6 +152,7 @@ export const PlatformSettings: GlobalConfig = {
       ],
     },
     {
+<<<<<<< HEAD
       name: 'services',
       type: 'group',
       label: 'Checkout services (My Booking, step 3)',
@@ -184,6 +185,8 @@ export const PlatformSettings: GlobalConfig = {
       ],
     },
     {
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
       name: 'features',
       type: 'group',
       label: 'Feature switches',

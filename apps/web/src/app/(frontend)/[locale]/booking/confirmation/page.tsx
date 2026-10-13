@@ -8,7 +8,10 @@ import { formatMinor, type PublicOrder } from '@/lib/bookingTypes'
 import { formatEventDate, intlLocales } from '@/lib/format'
 import { textParam } from '@/lib/listings'
 import { href, routes } from '@/lib/site'
+<<<<<<< HEAD
 import { ClearCart } from '@/components/account/ClearCart'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 // Personal page: never cached, never indexed.
 export const dynamic = 'force-dynamic'
@@ -92,6 +95,7 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
 
   return (
     <div className="container-wide pb-20">
+<<<<<<< HEAD
       <ClearCart />
       <header className="border-b border-rule-strong pt-10 pb-8 md:pt-16">
         <div role="status" className="mb-8 border-l-4 border-fjord bg-snow p-5">
@@ -99,6 +103,10 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
           <p className="mt-2 text-charcoal">{t.hubBookedBody}</p>
         </div>
         <span className="eyebrow text-brass-text">{t.confirmTitle}</span>
+=======
+      <header className="border-b border-rule-strong pt-10 pb-8 md:pt-16">
+        <span className="eyebrow text-brass-text">✓ {t.confirmTitle}</span>
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
         <h1 className="mt-3 text-h1">{order.event.title}</h1>
         <p className="meta mt-3">
           {date.full}
@@ -182,12 +190,15 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
                 <dd>{money(order.fees)}</dd>
               </div>
             ) : null}
+<<<<<<< HEAD
             {order.servicesTotal ? (
               <div className="flex justify-between gap-4">
                 <dt>{t.hubServicesTitle}</dt>
                 <dd>{money(order.servicesTotal)}</dd>
               </div>
             ) : null}
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
             <div className="flex justify-between gap-4 border-t border-rule pt-2 font-semibold">
               <dt>{t.total}</dt>
               <dd>{money(order.total)}</dd>

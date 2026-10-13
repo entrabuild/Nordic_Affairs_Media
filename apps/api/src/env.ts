@@ -40,6 +40,7 @@ const schema = z.object({
   ),
   SUPPORT_EMAIL: z.preprocess(blank, z.string().optional()),
 
+<<<<<<< HEAD
   // SMS (Twilio) for the "tickets by SMS" and "event reminder" services. Without all three,
   // those two services are not offered to buyers (so nobody pays for something we cannot send).
   TWILIO_ACCOUNT_SID: z.preprocess(blank, z.string().optional()),
@@ -47,6 +48,8 @@ const schema = z.object({
   TWILIO_FROM: z.preprocess(blank, z.string().optional()),
   TWILIO_API_BASE: z.preprocess(blank, z.string().default('https://api.twilio.com')),
 
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   // Shared secret between the website server and this API for staff-only endpoints.
   INTERNAL_API_KEY: z.preprocess(blank, z.string().min(24).optional()),
 

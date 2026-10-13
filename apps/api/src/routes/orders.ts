@@ -9,8 +9,11 @@ import { sendTicketsEmail } from '../fulfil.js'
 import { messages } from '../messages.js'
 import { newToken, orders, publicOrder, sha256, tickets, type Order } from '../orders.js'
 import { getDb } from '../db.js'
+<<<<<<< HEAD
 import { cancelOrderTickets } from '../cancellations.js'
 import { stripe } from '../stripe.js'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 export const ordersRouter = Router()
 
@@ -102,6 +105,7 @@ ordersRouter.post('/orders/:ref/resend', resendLimiter, async (req, res) => {
 ordersRouter.post('/orders/:ref/cancel-request', async (req, res) => {
   const order = await authorise(req)
   if (!order || order.status !== 'paid') return void res.status(404).json({ error: 'not_found' })
+<<<<<<< HEAD
 
   // "Money back in case of illness" (a paid extra): before the event starts, the buyer is refunded
   // everything except the extras themselves, automatically, and the tickets are cancelled.
@@ -143,6 +147,8 @@ ordersRouter.post('/orders/:ref/cancel-request', async (req, res) => {
     return void res.json({ requested: true, refunded: refundable })
   }
 
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   await orders().updateOne(
     { _id: order._id, cancelRequestedAt: { $exists: false } },
     { $set: { cancelRequestedAt: new Date() } },

@@ -10,7 +10,10 @@ import { webhookRouter } from './routes/webhooks.js'
 import { hasInternalKey, internalRouter } from './routes/internal.js'
 import { assistantRouter } from './routes/assistant.js'
 import { promoRouter } from './routes/promo.js'
+<<<<<<< HEAD
 import { sweepReminders } from './reminders.js'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 /**
  * Booking API (PRD v1.1).
@@ -24,7 +27,10 @@ import { sweepReminders } from './reminders.js'
  *   POST /orders/:ref/cancel-request
  *   POST /auth/code, /auth/verify, /auth/signout, GET /me/orders   My Bookings (B-01, B-08)
  *   POST /promo/preview             server-calculated promo discount for the ticket picker
+<<<<<<< HEAD
  *   POST /quote                     live order summary for the My Booking checkout
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
  *   GET  /config, POST /assistant/chat   AI assistant (PRD §7)
  *   /internal/*                     staff only: dashboard, refunds, comps, announcements,
  *                                   gate check-in, reports (needs INTERNAL_API_KEY)
@@ -103,11 +109,14 @@ const sweeper = setInterval(() => {
   sweepExpiredHolds().catch((e: unknown) => console.error('[sweeper]', e))
 }, 60_000)
 
+<<<<<<< HEAD
 // Text event reminders (a paid extra) every 5 minutes. Does nothing unless Twilio is set up.
 const reminders = setInterval(() => {
   sweepReminders().catch((e: unknown) => console.error('[reminders]', e))
 }, 5 * 60_000)
 
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 const server = app.listen(env.PORT, () => {
   console.log(`Booking API listening on :${env.PORT} (web: ${env.WEB_URL})`)
 })
@@ -115,7 +124,10 @@ const server = app.listen(env.PORT, () => {
 for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.on(signal, () => {
     clearInterval(sweeper)
+<<<<<<< HEAD
     clearInterval(reminders)
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
     server.close(() => {
       void disconnect().then(() => process.exit(0))
     })

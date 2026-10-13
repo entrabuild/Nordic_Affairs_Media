@@ -4,7 +4,10 @@ import { z } from 'zod'
 import { LOCALES, findPromo, findPublishedEvent, getSettings, pick, tierOnSale, type Locale } from '../catalog.js'
 import type { OrderItem } from '../orders.js'
 import { calculate, promoApplies, toMinor } from '../pricing.js'
+<<<<<<< HEAD
 import { priceServices } from '../services.js'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 /** Server-side promo code preview for the ticket picker ("Apply"). Prices are never trusted from the browser. */
 export const promoRouter = Router()
@@ -39,6 +42,7 @@ promoRouter.post('/promo/preview', limiter(30, 60_000), async (req, res) => {
   const totals = calculate(items, settings, event.vatRate ?? settings.defaultVatRate, promo)
   res.json({ ...totals, currency: event.currency })
 })
+<<<<<<< HEAD
 
 /**
  * Live order summary for the My Booking checkout: tickets, optional promo code and optional
@@ -84,3 +88,5 @@ promoRouter.post('/quote', limiter(120, 60_000), async (req, res) => {
     services: svc.lines,
   })
 })
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975

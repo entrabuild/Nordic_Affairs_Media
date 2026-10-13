@@ -37,6 +37,7 @@ export const Events: CollectionConfig = {
             { name: 'trailerUrl', type: 'text' },
             { name: 'description', type: 'richText', localized: true },
             {
+<<<<<<< HEAD
               name: 'location',
               type: 'group',
               label: 'Map location',
@@ -62,6 +63,8 @@ export const Events: CollectionConfig = {
               ],
             },
             {
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
               name: 'lineup',
               type: 'array',
               fields: [

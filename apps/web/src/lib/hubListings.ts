@@ -143,7 +143,11 @@ export async function listHubHighlights(locale: Locale) {
   return res.docs
 }
 
+<<<<<<< HEAD
 /** Events (the map keeps only those with real coordinates), for the map. Others stay in the list only. */
+=======
+/** Events that have real venue coordinates, for the map. Others stay in the list only. */
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 export async function listHubMapEvents(locale: Locale, filter: HubFilter) {
   const payload = await getPayloadClient()
   const res = await payload.find({

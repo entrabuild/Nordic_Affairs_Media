@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+<<<<<<< HEAD
 import { eventPlace } from '@/lib/eventLocation'
+=======
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { isLocale, localeMeta } from '@/i18n/config'
@@ -9,7 +12,12 @@ import { getEventBySlug } from '@/lib/queries'
 import { isDoc } from '@/lib/payload'
 import { formatEventDate, formatPrice, intlLocales } from '@/lib/format'
 import { ticketState, tierOnSale } from '@/lib/tickets'
+<<<<<<< HEAD
 import { bookingApiUrl } from '@/lib/booking'
+=======
+import { bookingApiUrl, bookingLabels } from '@/lib/booking'
+import { TicketPicker } from '@/components/events/TicketPicker'
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 import { href } from '@/lib/site'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { Eyebrow, SectionHeading } from '@/components/ui/primitives'
@@ -39,8 +47,12 @@ export default async function HubEventPage({ params }: Props) {
   const state = ticketState(event)
   const tiers = event.tiers ?? []
   const organizer = isDoc(event.organizer) ? event.organizer : null
+<<<<<<< HEAD
   const place = eventPlace(event)
   const fromPrice = tiers.filter((x) => tierOnSale(x)).reduce((m, x) => Math.min(m, x.price), Infinity)
+=======
+  const hasCoords = venue && typeof venue.latitude === 'number' && typeof venue.longitude === 'number'
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   const languages = (event.eventLanguage ?? []).filter(isLocale).map((l) => localeMeta[l].nativeLabel)
 
   return (
@@ -62,6 +74,7 @@ export default async function HubEventPage({ params }: Props) {
           <h1 className="mt-3 text-h1 md:text-display">{event.title}</h1>
           {event.summary ? <p className="mt-5 font-text text-deck text-charcoal">{event.summary}</p> : null}
 
+<<<<<<< HEAD
           <section id="tickets" aria-label={t.tickets} className="mt-8">
             {state === 'onSale' && tiers.length > 0 ? (
               <div className="border border-rule bg-snow p-5 sm:p-6">
@@ -78,6 +91,56 @@ export default async function HubEventPage({ params }: Props) {
                   {t.hubGetTickets}
                 </Link>
               </div>
+=======
+          <dl className="mt-8 grid gap-4 border-y border-rule py-6 sm:grid-cols-2">
+            <div>
+              <dt className="eyebrow text-slate">{t.date}</dt>
+              <dd className="mt-1 font-ui text-body font-semibold">
+                {event.startsAt ? <time dateTime={event.startsAt}>{date.full}</time> : date.full}
+              </dd>
+            </div>
+            {venue ? (
+              <div>
+                <dt className="eyebrow text-slate">{t.venue}</dt>
+                <dd className="mt-1 font-ui text-body">
+                  <span className="font-semibold">{venue.name}</span>, {venue.city}
+                </dd>
+              </div>
+            ) : null}
+            {organizer ? (
+              <div>
+                <dt className="eyebrow text-slate">{t.organizer}</dt>
+                <dd className="mt-1 font-ui text-body">{organizer.name}</dd>
+              </div>
+            ) : null}
+            {languages.length ? (
+              <div>
+                <dt className="eyebrow text-slate">{t.eventLanguage}</dt>
+                <dd className="mt-1 font-ui text-body">{languages.join(', ')}</dd>
+              </div>
+            ) : null}
+          </dl>
+
+          <section id="tickets" aria-label={t.tickets} className="mt-10">
+            <SectionHeading title={t.tickets} />
+            {state === 'onSale' && tiers.length > 0 ? (
+              <TicketPicker
+                eventId={event.id}
+                tiers={tiers.map((tier) => ({
+                  tierId: tier.tierId,
+                  name: tier.name,
+                  description: tier.description,
+                  price: tier.price,
+                }))}
+                currency={event.currency}
+                locale={locale}
+                intlLocale={intlLocales[locale]}
+                termsHref={href(locale, '/terms')}
+                privacyHref={href(locale, '/privacy')}
+                labels={bookingLabels(t)}
+                returnTo="account"
+              />
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
             ) : (
               <>
                 {tiers.length > 0 ? (
@@ -104,6 +167,7 @@ export default async function HubEventPage({ params }: Props) {
               </>
             )}
           </section>
+<<<<<<< HEAD
           <dl className="mt-6 space-y-5 border border-rule bg-snow p-5 sm:p-6">
             {venue || place ? (
               <div>
@@ -151,6 +215,26 @@ export default async function HubEventPage({ params }: Props) {
               />
               <a
                 href={`https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lng}#map=16/${place.lat}/${place.lng}`}
+=======
+        </div>
+      </div>
+      {venue ? (
+        <section className="container-max mt-14" aria-label={t.venue}>
+          <SectionHeading title={t.venue} as="h2" />
+          <p className="font-ui text-body font-semibold">{venue.name}</p>
+          <p className="meta mt-1 whitespace-pre-line">{venue.address}</p>
+          {venue.accessInfo ? <p className="mt-3 max-w-prose text-caption text-charcoal">{venue.accessInfo}</p> : null}
+          {hasCoords ? (
+            <>
+              <iframe
+                title={venue.name}
+                loading="lazy"
+                className="mt-4 h-72 w-full max-w-3xl border border-rule"
+                src={`https://www.openstreetmap.org/export/embed.html?bbox=${venue.longitude! - 0.006}%2C${venue.latitude! - 0.004}%2C${venue.longitude! + 0.006}%2C${venue.latitude! + 0.004}&layer=mapnik&marker=${venue.latitude}%2C${venue.longitude}`}
+              />
+              <a
+                href={`https://www.openstreetmap.org/?mlat=${venue.latitude}&mlon=${venue.longitude}#map=16/${venue.latitude}/${venue.longitude}`}
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 inline-block font-ui text-meta font-semibold text-fjord hover:underline"
@@ -158,7 +242,11 @@ export default async function HubEventPage({ params }: Props) {
                 {t.getDirections}
               </a>
             </>
+<<<<<<< HEAD
           ) : venue?.mapUrl ? (
+=======
+          ) : venue.mapUrl ? (
+>>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
             <a href={venue.mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-ui text-meta font-semibold text-fjord hover:underline">
               {t.getDirections}
             </a>
