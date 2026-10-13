@@ -2,8 +2,9 @@ import Link from 'next/link'
 import type { Locale } from '@/i18n/config'
 import type { Dictionary } from '@/i18n/dictionaries/en'
 import { href } from '@/lib/site'
+import { CartBadge } from './CartBadge'
 
-export type HubView = 'discover' | 'tickets'
+export type HubView = 'discover' | 'cart' | 'tickets'
 
 /** Two in-page sections of the My Booking hub: browse events, and your own tickets. */
 export function AccountSections({
@@ -18,6 +19,7 @@ export function AccountSections({
   const base = href(locale, '/account')
   const items: { view: HubView; label: string; to: string }[] = [
     { view: 'discover', label: t.hubDiscover, to: base },
+    { view: 'cart', label: t.hubCart, to: `${base}?view=cart` },
     { view: 'tickets', label: t.hubMyTickets, to: `${base}?view=tickets` },
   ]
   return (
@@ -34,6 +36,7 @@ export function AccountSections({
           }`}
         >
           {i.label}
+          {i.view === 'cart' ? <CartBadge /> : null}
         </Link>
       ))}
     </nav>

@@ -127,6 +127,14 @@ export async function receiptPdf(order: Order): Promise<Buffer> {
   if (order.discount)
     row(`Discount${order.promoCode ? ` (${order.promoCode})` : ''}`, `−${money(order.discount)}`)
   if (order.fees) row('Booking & service fees', money(order.fees))
+  if (order.servicesTotal) {
+    const names = [
+      order.services?.smsTickets ? 'tickets by SMS' : '',
+      order.services?.refundProtection ? 'refund protection' : '',
+      order.services?.reminder ? 'event reminder' : '',
+    ].filter(Boolean)
+    row(`Extra services (${names.join(', ')})`, money(order.servicesTotal))
+  }
   rule()
   row('Total', money(order.total), true)
   if (order.refundedAmount) row('Refunded', `−${money(order.refundedAmount)}`)
@@ -136,8 +144,8 @@ export async function receiptPdf(order: Order): Promise<Buffer> {
   doc.text(`VAT included: ${money(order.vatAmount)}`)
   doc.text(
     `of which tickets ${order.ticketVatRate}%: ${money(vatPart(ticketsNet, order.ticketVatRate))}` +
-      (order.fees
-        ? `; fees ${order.feeVatRate}%: ${money(vatPart(order.fees, order.feeVatRate))}`
+      (order.fees + (order.servicesTotal ?? 0)
+        ? `; fees and services ${order.feeVatRate}%: ${money(vatPart(order.fees + (order.servicesTotal ?? 0), order.feeVatRate))}`
         : ''),
   )
   doc.moveDown(2)

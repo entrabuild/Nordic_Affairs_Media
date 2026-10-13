@@ -14,7 +14,7 @@ import {
   listHubMapEvents,
   type DateRange,
 } from '@/lib/hubListings'
-import { isDoc } from '@/lib/payload'
+import { eventPlace } from '@/lib/eventLocation'
 import { href } from '@/lib/site'
 import { EmptyState, PageHeader } from '@/components/ui/primitives'
 import { Pagination } from '@/components/ui/Pagination'
@@ -22,6 +22,8 @@ import { MyBookings } from '@/components/account/MyBookings'
 import { AccountSections, type HubView } from '@/components/account/AccountSections'
 import { HubEventCard } from '@/components/account/HubEventCard'
 import { HubMap, type MapPoint } from '@/components/account/HubMap'
+import { CartView } from '@/components/account/CartView'
+import { checkoutLabels } from '@/lib/checkoutLabels'
 
 export async function generateMetadata({
   params,
@@ -33,7 +35,7 @@ export async function generateMetadata({
   return { title: getDictionary(locale).myBookings, robots: { index: false, follow: false } }
 }
 
-const views: HubView[] = ['discover', 'tickets']
+const views: HubView[] = ['discover', 'cart', 'tickets']
 
 export default async function AccountPage({
   params,
@@ -89,6 +91,14 @@ export default async function AccountPage({
       </div>
       <div className="mt-8">
         {view === 'discover' ? <Discover locale={locale} sp={sp} /> : null}
+        {view === 'cart' ? (
+          <CartView
+            labels={checkoutLabels(t)}
+            intlLocale={intlLocales[locale]}
+            checkoutBase={href(locale, '/account/events')}
+            browseHref={href(locale, '/account')}
+          />
+        ) : null}
         {view === 'tickets' ? myBookings : null}
       </div>
     </div>
@@ -142,17 +152,17 @@ async function Discover({
   }
 
   const points: MapPoint[] = mapEvents.flatMap((e) => {
-    const v = isDoc(e.venue) ? e.venue : null
-    if (!v || typeof v.latitude !== 'number' || typeof v.longitude !== 'number') return []
+    const place = eventPlace(e)
+    if (!place) return []
     return [
       {
         id: e.id,
         slug: e.slug,
         title: e.title,
         when: formatEventDate(e.startsAt, locale).full,
-        where: `${v.name}, ${v.city}`,
-        lat: v.latitude,
-        lng: v.longitude,
+        where: [place.name, place.city].filter(Boolean).join(', '),
+        lat: place.lat,
+        lng: place.lng,
       },
     ]
   })

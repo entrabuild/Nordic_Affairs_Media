@@ -10,6 +10,8 @@ export type PublicOrder = {
   subtotal: number
   discount: number
   fees: number
+  servicesTotal?: number
+  services?: { smsTickets: boolean; refundProtection: boolean; reminder: boolean }
   total: number
   vatAmount: number
   promoCode: string | null

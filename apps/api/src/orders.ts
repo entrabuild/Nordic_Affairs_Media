@@ -31,11 +31,20 @@ export type Order = {
   email: string // for paid online orders this is filled from the payment page (Stripe)
   name: string
   phone?: string
+  country?: string
+  postalCode?: string
+  companyName?: string
+  consent?: { marketing: boolean; promoter: boolean }
+  /** Extras bought in step 3 of checkout. */
+  services?: { smsTickets: boolean; refundProtection: boolean; reminder: boolean }
+  smsTicketsSentAt?: Date
+  reminderSentAt?: Date
   currency: string
   items: OrderItem[]
   subtotal: number
   discount: number
   fees: number
+  servicesTotal?: number
   total: number
   ticketVatRate: number
   feeVatRate: number
@@ -106,6 +115,8 @@ export function publicOrder(order: Order, orderTickets: Ticket[]) {
     subtotal: order.subtotal,
     discount: order.discount,
     fees: order.fees,
+    servicesTotal: order.servicesTotal ?? 0,
+    services: order.services ?? { smsTickets: false, refundProtection: false, reminder: false },
     total: order.total,
     vatAmount: order.vatAmount,
     promoCode: order.promoCode ?? null,

@@ -45,6 +45,7 @@ export function bookingLabels(t: Dictionary) {
     hubApply: t.hubApply,
     hubRemove: t.hubRemove,
     hubDiscount: t.hubDiscount,
+    errPhone: t.errPhone,
   }
 }
 export type BookingLabels = ReturnType<typeof bookingLabels>
@@ -56,6 +57,8 @@ export function errorText(code: string | undefined, l: BookingLabels): string {
       return l.errSoldOut
     case 'invalid_promo':
       return l.errPromo
+    case 'phone_required':
+      return l.errPhone
     case 'too_many':
       return l.errTooMany
     case 'not_on_sale':
