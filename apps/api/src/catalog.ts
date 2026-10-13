@@ -41,15 +41,11 @@ export type CatalogEvent = {
   _status?: 'draft' | 'published'
 }
 
-export type ServiceKey = 'smsTickets' | 'refundProtection' | 'reminder'
-
 export type PlatformSettings = {
   holdMinutes: number
   bookingFee: number
   serviceFeePercent: number
   defaultVatRate: number
-  /** Optional paid extras shown in step 3 of checkout. Prices in major units of the event currency. */
-  services: Record<ServiceKey, { enabled: boolean; price: number }>
   features: {
     ticketSales: boolean
     guestCheckout: boolean
@@ -104,18 +100,6 @@ export async function getSettings(): Promise<PlatformSettings> {
     bookingFee: Math.max(0, num(doc?.bookingFee, 0)),
     serviceFeePercent: Math.min(20, Math.max(0, num(doc?.serviceFeePercent, 0))),
     defaultVatRate: num(doc?.defaultVatRate, 6),
-    services: (() => {
-      const s = (doc?.services ?? {}) as Record<string, unknown>
-      const one = (key: string, price: number) => ({
-        enabled: bool(s[`${key}Enabled`], true),
-        price: Math.max(0, num(s[`${key}Price`], price)),
-      })
-      return {
-        smsTickets: one('smsTickets', 15),
-        refundProtection: one('refundProtection', 13),
-        reminder: one('reminder', 15),
-      }
-    })(),
     features: {
       ticketSales: bool(f.ticketSales, true),
       guestCheckout: bool(f.guestCheckout, true),

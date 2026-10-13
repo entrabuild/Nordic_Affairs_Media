@@ -12,11 +12,6 @@ export type Totals = {
   subtotal: number
   discount: number
   fees: number
-<<<<<<< HEAD
-  /** Optional extras the buyer chose in step 3 (SMS tickets, refund protection, reminder). */
-  servicesTotal: number
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   total: number
   vatAmount: number
 }
@@ -51,10 +46,6 @@ export function calculate(
   settings: PlatformSettings,
   ticketVatRate: number,
   promo: PromoCode | null,
-<<<<<<< HEAD
-  servicesTotal = 0,
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 ): Totals {
   const subtotal = items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0)
   let discount = 0
@@ -71,25 +62,9 @@ export function calculate(
     ticketsNet === 0
       ? 0
       : toMinor(settings.bookingFee) + Math.round((ticketsNet * settings.serviceFeePercent) / 100)
-<<<<<<< HEAD
-  const total = ticketsNet + fees + servicesTotal
-  const vatAmount =
-    vatPart(ticketsNet, ticketVatRate) +
-    vatPart(fees + servicesTotal, settings.defaultVatRate)
-  return { subtotal, discount, fees, servicesTotal, total, vatAmount }
-}
-
-export type ServiceSelection = { smsTickets?: boolean; refundProtection?: boolean; reminder?: boolean }
-
-export const SERVICE_NAMES: Record<keyof ServiceSelection, string> = {
-  smsTickets: 'Get your tickets sent via SMS',
-  refundProtection: 'Get your money back in case of illness',
-  reminder: 'Get a reminder about the event',
-=======
   const total = ticketsNet + fees
   const vatAmount = vatPart(ticketsNet, ticketVatRate) + vatPart(fees, settings.defaultVatRate)
   return { subtotal, discount, fees, total, vatAmount }
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 }
 
 export function formatMoney(minor: number, currency: string, locale = 'en-GB'): string {

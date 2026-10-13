@@ -9,11 +9,6 @@ import { sendTicketsEmail } from '../fulfil.js'
 import { messages } from '../messages.js'
 import { newToken, orders, publicOrder, sha256, tickets, type Order } from '../orders.js'
 import { getDb } from '../db.js'
-<<<<<<< HEAD
-import { cancelOrderTickets } from '../cancellations.js'
-import { stripe } from '../stripe.js'
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 export const ordersRouter = Router()
 
@@ -105,50 +100,6 @@ ordersRouter.post('/orders/:ref/resend', resendLimiter, async (req, res) => {
 ordersRouter.post('/orders/:ref/cancel-request', async (req, res) => {
   const order = await authorise(req)
   if (!order || order.status !== 'paid') return void res.status(404).json({ error: 'not_found' })
-<<<<<<< HEAD
-
-  // "Money back in case of illness" (a paid extra): before the event starts, the buyer is refunded
-  // everything except the extras themselves, automatically, and the tickets are cancelled.
-  const refundable = order.total - (order.servicesTotal ?? 0)
-  if (order.services?.refundProtection && order.eventStartsAt > new Date() && refundable > 0) {
-    const claimed = await orders().findOneAndUpdate(
-      { _id: order._id, status: 'paid' },
-      {
-        $set: {
-          status: 'partially_refunded',
-          refundedAmount: refundable,
-          cancelRequestedAt: new Date(),
-        },
-      },
-    )
-    if (!claimed) return void res.status(409).json({ error: 'already_handled' })
-    if (order.stripePaymentIntentId) {
-      const s = stripe()
-      try {
-        if (!s) throw new Error('payments_unavailable')
-        await s.refunds.create(
-          {
-            payment_intent: order.stripePaymentIntentId,
-            amount: refundable,
-            metadata: { orderId: order._id, cause: 'refund_protection' },
-          },
-          { idempotencyKey: `protect:${order._id}` },
-        )
-      } catch (e) {
-        console.error('[refund-protection]', e)
-        await orders().updateOne(
-          { _id: order._id },
-          { $set: { status: 'paid' }, $unset: { refundedAmount: '', cancelRequestedAt: '' } },
-        )
-        return void res.status(502).json({ error: 'payment_provider_error' })
-      }
-    }
-    await cancelOrderTickets(order._id)
-    return void res.json({ requested: true, refunded: refundable })
-  }
-
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   await orders().updateOne(
     { _id: order._id, cancelRequestedAt: { $exists: false } },
     { $set: { cancelRequestedAt: new Date() } },

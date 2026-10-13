@@ -1,9 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-<<<<<<< HEAD
-import { eventPlace } from '@/lib/eventLocation'
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { isLocale, localeMeta } from '@/i18n/config'
@@ -12,12 +8,8 @@ import { getEventBySlug } from '@/lib/queries'
 import { isDoc } from '@/lib/payload'
 import { formatEventDate, formatPrice, intlLocales } from '@/lib/format'
 import { ticketState, tierOnSale } from '@/lib/tickets'
-<<<<<<< HEAD
-import { bookingApiUrl } from '@/lib/booking'
-=======
 import { bookingApiUrl, bookingLabels } from '@/lib/booking'
 import { TicketPicker } from '@/components/events/TicketPicker'
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 import { href } from '@/lib/site'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { Eyebrow, SectionHeading } from '@/components/ui/primitives'
@@ -47,12 +39,7 @@ export default async function HubEventPage({ params }: Props) {
   const state = ticketState(event)
   const tiers = event.tiers ?? []
   const organizer = isDoc(event.organizer) ? event.organizer : null
-<<<<<<< HEAD
-  const place = eventPlace(event)
-  const fromPrice = tiers.filter((x) => tierOnSale(x)).reduce((m, x) => Math.min(m, x.price), Infinity)
-=======
   const hasCoords = venue && typeof venue.latitude === 'number' && typeof venue.longitude === 'number'
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   const languages = (event.eventLanguage ?? []).filter(isLocale).map((l) => localeMeta[l].nativeLabel)
 
   return (
@@ -74,24 +61,6 @@ export default async function HubEventPage({ params }: Props) {
           <h1 className="mt-3 text-h1 md:text-display">{event.title}</h1>
           {event.summary ? <p className="mt-5 font-text text-deck text-charcoal">{event.summary}</p> : null}
 
-<<<<<<< HEAD
-          <section id="tickets" aria-label={t.tickets} className="mt-8">
-            {state === 'onSale' && tiers.length > 0 ? (
-              <div className="border border-rule bg-snow p-5 sm:p-6">
-                <p className="font-ui text-body">
-                  <span className="text-slate">{t.hubFrom}</span>{' '}
-                  <span data-testid="from-price" className="font-display text-h3">
-                    {fromPrice === 0 ? t.hubFree : formatPrice(fromPrice, event.currency, locale)}
-                  </span>
-                </p>
-                <Link
-                  href={href(locale, `/account/events/${event.slug}/tickets`)}
-                  className="mt-4 inline-flex min-h-12 w-full items-center justify-center bg-fjord px-6 font-ui text-caption font-semibold text-snow hover:bg-fjord-deep"
-                >
-                  {t.hubGetTickets}
-                </Link>
-              </div>
-=======
           <dl className="mt-8 grid gap-4 border-y border-rule py-6 sm:grid-cols-2">
             <div>
               <dt className="eyebrow text-slate">{t.date}</dt>
@@ -140,7 +109,6 @@ export default async function HubEventPage({ params }: Props) {
                 labels={bookingLabels(t)}
                 returnTo="account"
               />
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
             ) : (
               <>
                 {tiers.length > 0 ? (
@@ -167,55 +135,6 @@ export default async function HubEventPage({ params }: Props) {
               </>
             )}
           </section>
-<<<<<<< HEAD
-          <dl className="mt-6 space-y-5 border border-rule bg-snow p-5 sm:p-6">
-            {venue || place ? (
-              <div>
-                <dt className="font-ui text-caption font-semibold">{t.hubLocation}</dt>
-                <dd className="mt-2 font-ui text-body text-charcoal">
-                  <span className="block">{place?.name || venue?.name}</span>
-                  <span className="block whitespace-pre-line">{place?.address || venue?.address || venue?.city}</span>
-                </dd>
-              </div>
-            ) : null}
-            <div className="border-t border-rule pt-5">
-              <dt className="font-ui text-caption font-semibold">{t.date}</dt>
-              <dd className="mt-2 font-ui text-body text-charcoal">
-                {event.startsAt ? <time dateTime={event.startsAt}>{date.full}</time> : date.full}
-              </dd>
-            </div>
-            {organizer ? (
-              <div className="border-t border-rule pt-5">
-                <dt className="font-ui text-caption font-semibold">{t.organizer}</dt>
-                <dd className="mt-2 font-ui text-body text-charcoal">{organizer.name}</dd>
-              </div>
-            ) : null}
-            {languages.length ? (
-              <div className="border-t border-rule pt-5">
-                <dt className="font-ui text-caption font-semibold">{t.eventLanguage}</dt>
-                <dd className="mt-2 font-ui text-body text-charcoal">{languages.join(', ')}</dd>
-              </div>
-            ) : null}
-          </dl>
-        </div>
-      </div>
-      {venue || place ? (
-        <section className="container-max mt-14" aria-label={t.venue}>
-          <SectionHeading title={t.venue} as="h2" />
-          <p className="font-ui text-body font-semibold">{place?.name || venue?.name}</p>
-          <p className="meta mt-1 whitespace-pre-line">{place?.address || venue?.address}</p>
-          {venue?.accessInfo ? <p className="mt-3 max-w-prose text-caption text-charcoal">{venue.accessInfo}</p> : null}
-          {place ? (
-            <>
-              <iframe
-                title={place.name || event.title}
-                loading="lazy"
-                className="mt-4 h-72 w-full max-w-3xl border border-rule"
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.lng - 0.006}%2C${place.lat - 0.004}%2C${place.lng + 0.006}%2C${place.lat + 0.004}&layer=mapnik&marker=${place.lat}%2C${place.lng}`}
-              />
-              <a
-                href={`https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lng}#map=16/${place.lat}/${place.lng}`}
-=======
         </div>
       </div>
       {venue ? (
@@ -234,7 +153,6 @@ export default async function HubEventPage({ params }: Props) {
               />
               <a
                 href={`https://www.openstreetmap.org/?mlat=${venue.latitude}&mlon=${venue.longitude}#map=16/${venue.latitude}/${venue.longitude}`}
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 inline-block font-ui text-meta font-semibold text-fjord hover:underline"
@@ -242,11 +160,7 @@ export default async function HubEventPage({ params }: Props) {
                 {t.getDirections}
               </a>
             </>
-<<<<<<< HEAD
-          ) : venue?.mapUrl ? (
-=======
           ) : venue.mapUrl ? (
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
             <a href={venue.mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-ui text-meta font-semibold text-fjord hover:underline">
               {t.getDirections}
             </a>

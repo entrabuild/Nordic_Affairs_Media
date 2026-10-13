@@ -37,34 +37,6 @@ export const Events: CollectionConfig = {
             { name: 'trailerUrl', type: 'text' },
             { name: 'description', type: 'richText', localized: true },
             {
-<<<<<<< HEAD
-              name: 'location',
-              type: 'group',
-              label: 'Map location',
-              admin: {
-                description:
-                  'Where the event takes place. Shown on the My Booking map and the event page. Overrides the venue’s location if both are set.',
-              },
-              fields: [
-                { name: 'placeName', type: 'text', admin: { description: 'Optional, e.g. Stora Salen, Stockholm Konserthus.' } },
-                { name: 'address', type: 'textarea', admin: { description: 'Street address, shown to buyers.' } },
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'latitude', type: 'number', min: -90, max: 90, admin: { description: 'Set by the map below, or type it.' } },
-                    { name: 'longitude', type: 'number', min: -180, max: 180 },
-                  ],
-                },
-                {
-                  name: 'mapPicker',
-                  type: 'ui',
-                  admin: { components: { Field: '/components/admin/EventMapPicker#EventMapPicker' } },
-                },
-              ],
-            },
-            {
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
               name: 'lineup',
               type: 'array',
               fields: [

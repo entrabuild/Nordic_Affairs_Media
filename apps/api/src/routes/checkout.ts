@@ -23,10 +23,6 @@ import { newOrderRef, newToken, orders, type Order, type OrderItem } from '../or
 import { calculate, promoApplies, toMinor } from '../pricing.js'
 import { release, remaining, reserve, sweepExpiredHolds, type Hold } from '../stock.js'
 import { stripe, stripeLocale } from '../stripe.js'
-<<<<<<< HEAD
-import { offeredServices, priceServices } from '../services.js'
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
 
 export const checkoutRouter = Router()
 
@@ -46,32 +42,6 @@ const body = z.object({
     .min(1)
     .max(10),
   promoCode: z.string().trim().max(40).optional(),
-<<<<<<< HEAD
-  // Buyer information step of the My Booking checkout (all optional so the Events page keeps working).
-  phone: z
-    .string()
-    .trim()
-    .regex(/^\+[1-9]\d{6,14}$/)
-    .optional(),
-  country: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .regex(/^[A-Z]{2}$/)
-    .optional(),
-  postalCode: z.string().trim().max(12).optional(),
-  companyName: z.string().trim().max(80).optional(),
-  consent: z.object({ marketing: z.boolean(), promoter: z.boolean() }).optional(),
-  // Extras from the Services step. Anything not offered is ignored by the server.
-  services: z
-    .object({
-      smsTickets: z.boolean().optional(),
-      refundProtection: z.boolean().optional(),
-      reminder: z.boolean().optional(),
-    })
-    .optional(),
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   acceptTerms: z.literal(true),
   // Set by the My Booking hub so an abandoned payment returns there. Absent = Events page.
   returnTo: z.enum(['account']).optional(),
@@ -93,11 +63,6 @@ checkoutRouter.get('/events/:id/availability', async (req, res) => {
     promoCodes: settings.features.promoCodes,
     maxPerOrder: event.maxPerOrder ?? 10,
     holdMinutes: settings.holdMinutes,
-<<<<<<< HEAD
-    serviceFeePercent: settings.serviceFeePercent,
-    services: offeredServices(settings),
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
     tiers: tiers.map((t) => ({
       tierId: t.tierId,
       onSale: tierOnSale(t),
@@ -169,20 +134,7 @@ checkoutRouter.post('/checkout', checkoutLimiter, async (req, res) => {
     }
   }
 
-<<<<<<< HEAD
-  const services = priceServices(input.services, settings)
-  if ((services.chosen.smsTickets || services.chosen.reminder) && !input.phone)
-    return void res.status(400).json({ error: 'phone_required' })
-  const totals = calculate(
-    items,
-    settings,
-    event.vatRate ?? settings.defaultVatRate,
-    promo,
-    services.total,
-  )
-=======
   const totals = calculate(items, settings, event.vatRate ?? settings.defaultVatRate, promo)
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   if (totals.total === 0 && (!input.email || !input.name))
     return void res.status(400).json({ error: 'details_required' })
   if (totals.total > 0 && !stripe())
@@ -201,20 +153,7 @@ checkoutRouter.post('/checkout', checkoutLimiter, async (req, res) => {
     held.push(item)
   }
 
-<<<<<<< HEAD
-  const result = await createOrder({
-    input,
-    event,
-    items,
-    totals,
-    promo,
-    settings,
-    eventId,
-    services,
-  }).catch(
-=======
   const result = await createOrder({ input, event, items, totals, promo, settings, eventId }).catch(
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
     async (e: unknown) => {
       for (const h of held) await release(eventId, h.tierId, h.quantity)
       throw e
@@ -235,14 +174,8 @@ async function createOrder(args: {
   promo: PromoCode | null
   settings: Awaited<ReturnType<typeof getSettings>>
   eventId: string
-<<<<<<< HEAD
-  services: ReturnType<typeof priceServices>
-}): Promise<{ ref: string; url: string } | Fail> {
-  const { input, event, items, totals, promo, settings, eventId, services } = args
-=======
 }): Promise<{ ref: string; url: string } | Fail> {
   const { input, event, items, totals, promo, settings, eventId } = args
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   if (promo && !(await claimPromoUse(promo))) return fail(400, 'invalid_promo')
 
   const now = new Date()
@@ -258,15 +191,6 @@ async function createOrder(args: {
     locale: input.locale,
     email: input.email ?? '',
     name: input.name ?? '',
-<<<<<<< HEAD
-    ...(input.phone ? { phone: input.phone } : {}),
-    ...(input.country ? { country: input.country } : {}),
-    ...(input.postalCode ? { postalCode: input.postalCode } : {}),
-    ...(input.companyName ? { companyName: input.companyName } : {}),
-    ...(input.consent ? { consent: input.consent } : {}),
-    services: services.chosen,
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
     currency: event.currency,
     items,
     ...totals,
@@ -318,19 +242,6 @@ async function createOrder(args: {
         },
       })
     }
-<<<<<<< HEAD
-    for (const line of services.lines) {
-      lineItems.push({
-        quantity: 1,
-        price_data: {
-          currency: order.currency.toLowerCase(),
-          unit_amount: line.price,
-          product_data: { name: line.name },
-        },
-      })
-    }
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
     const discounts = totals.discount
       ? [
           {
@@ -351,16 +262,9 @@ async function createOrder(args: {
     // if someone pays after their hold ended, fulfilOrder re-checks stock (and refunds if gone).
     const session = await s.checkout.sessions.create({
       mode: 'payment',
-<<<<<<< HEAD
-      // If the buyer already gave email and phone in step 2 they are prefilled / skipped. Otherwise (Events page)
-      // Stripe's page asks for them and the webhook copies them onto the order.
-      ...(order.email ? { customer_email: order.email } : {}),
-      phone_number_collection: { enabled: !order.phone },
-=======
       // Paid orders: Stripe's page asks for email, name and phone. The webhook copies them onto the order.
       ...(order.email ? { customer_email: order.email } : {}),
       phone_number_collection: { enabled: true },
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
       billing_address_collection: 'auto',
       client_reference_id: order._id,
       metadata: { orderId: order._id },

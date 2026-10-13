@@ -127,17 +127,6 @@ export async function receiptPdf(order: Order): Promise<Buffer> {
   if (order.discount)
     row(`Discount${order.promoCode ? ` (${order.promoCode})` : ''}`, `−${money(order.discount)}`)
   if (order.fees) row('Booking & service fees', money(order.fees))
-<<<<<<< HEAD
-  if (order.servicesTotal) {
-    const names = [
-      order.services?.smsTickets ? 'tickets by SMS' : '',
-      order.services?.refundProtection ? 'refund protection' : '',
-      order.services?.reminder ? 'event reminder' : '',
-    ].filter(Boolean)
-    row(`Extra services (${names.join(', ')})`, money(order.servicesTotal))
-  }
-=======
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
   rule()
   row('Total', money(order.total), true)
   if (order.refundedAmount) row('Refunded', `−${money(order.refundedAmount)}`)
@@ -147,13 +136,8 @@ export async function receiptPdf(order: Order): Promise<Buffer> {
   doc.text(`VAT included: ${money(order.vatAmount)}`)
   doc.text(
     `of which tickets ${order.ticketVatRate}%: ${money(vatPart(ticketsNet, order.ticketVatRate))}` +
-<<<<<<< HEAD
-      (order.fees + (order.servicesTotal ?? 0)
-        ? `; fees and services ${order.feeVatRate}%: ${money(vatPart(order.fees + (order.servicesTotal ?? 0), order.feeVatRate))}`
-=======
       (order.fees
         ? `; fees ${order.feeVatRate}%: ${money(vatPart(order.fees, order.feeVatRate))}`
->>>>>>> b87107647cd1012898a78fa40acd2c290fe3c975
         : ''),
   )
   doc.moveDown(2)
